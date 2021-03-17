@@ -4,7 +4,7 @@ import useFetch from "../../services/useFetch";
 import {useParams,useNavigate} from 'react-router-dom';
 import PageNotFound from "../404/PageNotFound"
 
-export default function Detail() {
+export default function Detail(props) {
   const {id}=useParams();
   const navigate=useNavigate();
 
@@ -41,7 +41,9 @@ export default function Detail() {
               )}
             </select> <br/>
             
-      <button  disabled={!sku} className="btn btn-primary"  onClick={()=>{navigate("/cart")}}>Add to cart</button>
+      <button  disabled={!sku} className="btn btn-primary"  onClick={()=>{
+        props.addtocart(id,sku);
+        navigate("/cart")}}>Add to cart</button>
       <p id="price">${product.price}</p>
       <img src={`/images/${product.image}`} alt={product.category} />
     </div>
