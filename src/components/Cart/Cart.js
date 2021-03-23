@@ -2,7 +2,7 @@ import React from "react";
 import useFetchAll from "../../services/useFetchAll";
 import Spinner from "../../Spinner";
 
-export default function Cart({ cart, updateQuantity }) {
+export default function Cart({ cart, updateQuantity,deleteitem }) {
   const urls = cart.map((i) => `products/${i.id}`);
   const { data: products, loading, error } = useFetchAll(urls);
 
@@ -12,6 +12,8 @@ export default function Cart({ cart, updateQuantity }) {
       (p) => p.id === parseInt(id)
     );
     const { size } = skus.find((s) => s.sku === sku);
+
+    
 
     return (
       <li key={sku} className="cart-item">
@@ -26,7 +28,7 @@ export default function Cart({ cart, updateQuantity }) {
               onChange={(e) => updateQuantity(sku, parseInt(e.target.value))}
               value={quantity}
             >
-              <option value="0">Remove</option>
+              <option value="0" >Remove</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -34,6 +36,7 @@ export default function Cart({ cart, updateQuantity }) {
               <option value="5">5</option>
             </select>
           </p>
+          <button onClick={()=>{deleteitem(sku)}}>Remove from cart</button>
         </div>
       </li>
     );
@@ -41,6 +44,10 @@ export default function Cart({ cart, updateQuantity }) {
 
   if (loading) return <Spinner />;
   if (error) throw error;
+
+  if(cart.length===0){
+    return<h2>Your cart is empty</h2>
+  }
 
   return (
     <section id="cart">

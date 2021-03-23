@@ -36,6 +36,24 @@ export default function App() {
     });
   };
 
+  const updateQuantity = (sku, quantity) => {
+    setcart((items) => {
+      return items.map((i) => {
+        if (i.sku === sku) {
+          return { ...i, quantity };
+        } else {
+          return i;
+        }
+      });
+    });
+  };
+
+  const deleteitem = (sku) => {
+    setcart((items) => {
+      return items.filter((i) => i.sku !== sku);
+    });
+  };
+
   return (
     <>
       <div className="content">
@@ -48,7 +66,16 @@ export default function App() {
               path="/:category/:id"
               element={<Detail addtocart={addtocart} />}
             />
-            <Route path="/cart" element={<Cart cart={cart} />} />
+            <Route
+              path="/cart"
+              element={
+                <Cart
+                  cart={cart}
+                  updateQuantity={updateQuantity}
+                  deleteitem={deleteitem}
+                />
+              }
+            />
           </Routes>
         </main>
       </div>
