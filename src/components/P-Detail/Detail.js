@@ -42,7 +42,7 @@ export default function Detail(props) {
             </select> <br/>
             
       <button  disabled={!sku} className="btn btn-primary"  onClick={()=>{
-        props.addtocart(id,sku);
+        props.addtocart(id,sku,product.price);
         navigate("/cart")}}>Add to cart</button>
       <p id="price">${product.price}</p>
       <img src={`/images/${product.image}`} alt={product.category} />

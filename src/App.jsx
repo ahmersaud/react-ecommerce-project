@@ -10,7 +10,7 @@ import { Routes, Route } from "react-router-dom";
 export default function App() {
   const [cart, setcart] = useState([]);
 
-  const addtocart = (id, sku) => {
+  const addtocart = (id, sku, price) => {
     //in this method we are updating state using existing state so we are using function form of set state
     setcart((items) => {
       //React will provide the current state as the arguement to this function
@@ -21,7 +21,7 @@ export default function App() {
       //we need to check  if the sku is already in the cart
 
       const itemInCart = items.find((i) => i.sku === sku);
-      //  itemInCart.quantity++;//we should not do this because we trying to avoid mutating
+
       if (itemInCart) {
         return items.map((i) => {
           if (i.sku === sku) {
@@ -31,7 +31,7 @@ export default function App() {
           }
         });
       } else {
-        return [...items, { id, sku, quantity: 1 }];
+        return [...items, { id, sku, quantity: 1, price }];
       }
     });
   };

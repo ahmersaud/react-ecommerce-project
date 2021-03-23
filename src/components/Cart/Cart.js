@@ -7,8 +7,8 @@ export default function Cart({ cart, updateQuantity,deleteitem }) {
   const { data: products, loading, error } = useFetchAll(urls);
 
   function renderItem(itemInCart) {
-    const { id, sku, quantity } = itemInCart;
-    const { price, name, image, skus } = products.find(
+    const { id, sku, quantity,price } = itemInCart;
+    const {  name, image, skus } = products.find(
       (p) => p.id === parseInt(id)
     );
     const { size } = skus.find((s) => s.sku === sku);
@@ -45,14 +45,21 @@ export default function Cart({ cart, updateQuantity,deleteitem }) {
   if (loading) return <Spinner />;
   if (error) throw error;
 
-  if(cart.length===0){
-    return<h2>Your cart is empty</h2>
-  }
+  // if(cart.length===0){
+  //   return<h2>Your cart is empty</h2>
+  // }
+
+  const numofItemsincart=cart.reduce((total,item)=>total + item.quantity ,0);
+  const totalcost=cart.reduce(( total, item ) => total+ item.quantity * item.price ,0);
 
   return (
     <section id="cart">
       <h1>Cart</h1>
+      <h2>{numofItemsincart===0
+          ?"Your Cart is Empty"
+          :`${numofItemsincart} items in cart`}</h2>
       <ul>{cart.map(renderItem)}</ul>
+      <h2>{`Total cost: ${totalcost}$`}</h2>
     </section>
   );
 }
