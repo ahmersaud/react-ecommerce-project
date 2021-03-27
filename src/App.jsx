@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -8,7 +8,18 @@ import Cart from "./components/Cart/Cart";
 import { Routes, Route } from "react-router-dom";
 
 export default function App() {
-  const [cart, setcart] = useState([]);
+  //storing and retrieving cart data from local storage
+  const [cart, setcart] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("cart")) ?? []; //?? means if the value on the left is null then return [];
+    } catch (error) {
+      console.log("cannot parse data from the local storage");
+      return [];
+    }
+  }); //using a function to initializa the state because the function will only be run once the component renderss for first time and not on every render
+
+  useEffect(() => localStorage.setItem("cart", JSON.stringify(cart)), [cart]);
+  //the above expression says that anytime the cart changes,  store it in local storage as Json string ,using key 'cart'
 
   const addtocart = (id, sku, price) => {
     //in this method we are updating state using existing state so we are using function form of set state
