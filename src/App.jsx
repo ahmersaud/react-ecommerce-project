@@ -5,6 +5,7 @@ import Header from "./Header";
 import ProductsPage from "./components/Productspage/ProductsPage";
 import Detail from "./components/P-Detail/Detail";
 import Cart from "./components/Cart/Cart";
+import Checkout from "./components/checkout/Checkout";
 import { Routes, Route } from "react-router-dom";
 
 export default function App() {
@@ -87,6 +88,7 @@ export default function App() {
                 />
               }
             />
+            <Route path="/checkout" element={<Checkout cart={cart} />} />
           </Routes>
         </main>
       </div>
