@@ -66,6 +66,10 @@ export default function App() {
     });
   };
 
+  const emptyCart = () => {
+    setcart([]);
+  };
+
   return (
     <>
       <div className="content">
@@ -88,7 +92,10 @@ export default function App() {
                 />
               }
             />
-            <Route path="/checkout" element={<Checkout cart={cart} />} />
+            <Route
+              path="/checkout"
+              element={<Checkout cart={cart} emptyCart={emptyCart} />}
+            />
           </Routes>
         </main>
       </div>
