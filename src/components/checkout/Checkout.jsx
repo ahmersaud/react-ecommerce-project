@@ -10,7 +10,10 @@ export default function Checkout({ cart }) {
   const [address, setAddress] = useState(emptyAddress);
 
   function handleChange(e) {
-    // TODO
+    e.persist();
+    setAddress((curAddress) => {
+      return { ...curAddress, [e.target.id]: e.target.value }; //1. Set address to a copy of the current address 2.Use the inputs id to determine which property to set (using computed property syntax)
+    });
   }
 
   function handleBlur(event) {

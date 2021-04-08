@@ -43,7 +43,9 @@ export default function Detail(props) {
             
       <button  disabled={!sku} className="btn btn-primary"  onClick={()=>{
         props.addtocart(id,sku,product.price);
-        navigate("/cart")}}>Add to cart</button>
+        navigate("/shoes");
+        alert(`${product.name} added to cart`);
+        }}>Add to cart</button>
       <p id="price">${product.price}</p>
       <img src={`/images/${product.image}`} alt={product.category} />
     </div>
