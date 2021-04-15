@@ -19,6 +19,10 @@ export default function Checkout({ cart, emptyCart }) {
   const [address, setAddress] = useState(emptyAddress);
   const [saveError, setSaveError] = useState(null);
 
+  //derived state
+  const errors = getErrors(address);
+  const isValid = Object.keys(errors).length === 0;
+
   function handleChange(e) {
     e.persist();
     setAddress((curAddress) => {
@@ -30,16 +34,26 @@ export default function Checkout({ cart, emptyCart }) {
     // TODO
   }
 
+  function getErrors(address) {
+    const results = {};
+    if (!address.city) results.city = "City is required";
+    if (!address.country) results.country = "Country is required";
+    return results;
+  }
+
   async function handleSubmit(event) {
     event.preventDefault(); // this will keep the form from posting back
     setStatus(STATUS.SUBMITTING);
-
-    try {
-      await saveShippingAddress(address);
-      emptyCart();
-      setStatus(STATUS.COMPLETED);
-    } catch (e) {
-      setSaveError(e);
+    if (isValid) {
+      try {
+        await saveShippingAddress(address);
+        emptyCart();
+        setStatus(STATUS.COMPLETED);
+      } catch (e) {
+        setSaveError(e);
+      }
+    } else {
+      setStatus(STATUS.SUBMITTED);
     }
   }
 
@@ -51,6 +65,19 @@ export default function Checkout({ cart, emptyCart }) {
   return (
     <>
       <h1>Shipping Info</h1>
+
+      {!isValid &&
+        status === STATUS.SUBMITTED && ( //this says that if the form is invalid and submitted then show the errors above the form
+          <div role="alert">
+            <p>Please Fix the following errors</p>
+            <ul>
+              {Object.keys(errors).map((key) => {
+                return <li key={key}>{errors[key]}</li>;
+              })}
+            </ul>
+          </div>
+        )}
+
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="city">City</label>
@@ -75,7 +102,7 @@ export default function Checkout({ cart, emptyCart }) {
           >
             <option value="">Select Country</option>
             <option value="China">China</option>
-            <option value="India">India</option>
+            <option value="Pakistan">Pakistan</option>
             <option value="United Kingdom">United Kingdom</option>
             <option value="USA">USA</option>
           </select>

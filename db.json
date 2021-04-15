@@ -69,6 +69,26 @@
       "city": "Islamabad",
       "country": "China",
       "id": 2
+    },
+    {
+      "city": "Islamabad",
+      "country": "China",
+      "id": 3
+    },
+    {
+      "city": "",
+      "country": "",
+      "id": 4
+    },
+    {
+      "city": "Islamabad",
+      "country": "United Kingdom",
+      "id": 5
+    },
+    {
+      "city": "Islamabad",
+      "country": "China",
+      "id": 6
     }
   ]
 }
