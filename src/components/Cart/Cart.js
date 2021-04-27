@@ -3,11 +3,11 @@ import useFetchAll from "../../services/useFetchAll";
 import Spinner from "../../Spinner";
 import {useNavigate} from 'react-router-dom';
 
-export default function Cart({ cart, updateQuantity,deleteitem }) {
+export default function Cart(props) {
 
   const navigate=useNavigate();
 
-  const urls = cart.map((i) => `products/${i.id}`);
+  const urls = props.cart.map((i) => `products/${i.id}`);
   const { data: products, loading, error } = useFetchAll(urls);
 
   function renderItem(itemInCart) {
@@ -29,7 +29,7 @@ export default function Cart({ cart, updateQuantity,deleteitem }) {
           <p>
             <select
               aria-label={`Select quantity for ${name} size ${size}`}
-              onChange={(e) => updateQuantity(sku, parseInt(e.target.value))}
+              onChange={(e) => props.dispatch({type:"updateQuantity",sku, quantity:parseInt(e.target.value)})}
               value={quantity}
             >
               <option value="0" >Remove</option>
@@ -40,7 +40,7 @@ export default function Cart({ cart, updateQuantity,deleteitem }) {
               <option value="5">5</option>
             </select>
           </p>
-          <button onClick={()=>{deleteitem(sku)}}>Remove from cart</button>
+          <button onClick={()=>{props.dispatch({type:"deleteitem",sku})}}>Remove from cart</button>
         </div>
       </li>
     );
@@ -53,8 +53,8 @@ export default function Cart({ cart, updateQuantity,deleteitem }) {
   //   return<h2>Your cart is empty</h2>
   // }
 
-  const numofItemsincart=cart.reduce((total,item)=>total + item.quantity ,0);
-  const totalcost=cart.reduce(( total, item ) => total+ item.quantity * item.price ,0);
+  const numofItemsincart=props.cart.reduce((total,item)=>total + item.quantity ,0);
+  const totalcost=props.cart.reduce(( total, item ) => total+ item.quantity * item.price ,0);
 
   return (
     <section id="cart">
@@ -62,9 +62,9 @@ export default function Cart({ cart, updateQuantity,deleteitem }) {
       <h2>{numofItemsincart===0
           ?"Your Cart is Empty"
           :`${numofItemsincart} items in cart`}</h2>
-      <ul>{cart.map(renderItem)}</ul>
+      <ul>{props.cart.map(renderItem)}</ul>
       <h2>{`Total cost: ${totalcost}$`}</h2>
-      {cart.length>0 && <button className="btn btn-primary" onClick={()=>{navigate("/checkout")}} > Checkout</button>}
+      {props.cart.length>0 && <button className="btn btn-primary" onClick={()=>{navigate("/checkout")}} > Checkout</button>}
     </section>
   );
 }
