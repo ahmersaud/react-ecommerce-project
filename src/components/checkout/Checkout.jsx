@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useCart } from "../../cartContext";
 import { saveShippingAddress } from "../../services/shippingService";
 
 const STATUS = {
@@ -14,7 +15,8 @@ const emptyAddress = {
   country: "",
 };
 
-export default function Checkout(props) {
+export default function Checkout() {
+  const { dispatch } = useCart();
   const [status, setStatus] = useState(STATUS.IDLE);
   const [address, setAddress] = useState(emptyAddress);
   const [saveError, setSaveError] = useState(null);
@@ -47,7 +49,7 @@ export default function Checkout(props) {
     if (isValid) {
       try {
         await saveShippingAddress(address);
-        props.dispatch({ type: "empty" });
+        dispatch({ type: "empty" });
         setStatus(STATUS.COMPLETED);
       } catch (e) {
         setSaveError(e);

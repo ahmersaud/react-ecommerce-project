@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React from "react";
 // import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -7,22 +7,9 @@ import Detail from "./components/P-Detail/Detail";
 import Cart from "./components/Cart/Cart";
 import Checkout from "./components/checkout/Checkout";
 import { Routes, Route } from "react-router-dom";
-import cartreducer from "./Reducers";
-
-let initialstate;
-try {
-  //retrieving cart data from local storage
-  initialstate = JSON.parse(localStorage.getItem("cart")) ?? []; //?? means if the value on the left is null then return [];
-} catch (error) {
-  console.log("cannot parse data from the local storage");
-  initialstate = [];
-}
+import { CartContext, CartProvider } from "./cartContext";
 
 export default function App() {
-  const [cart, dispatch] = useReducer(cartreducer, initialstate);
-  useEffect(() => localStorage.setItem("cart", JSON.stringify(cart)), [cart]);
-  //the above expression says that anytime the cart changes,  store it in local storage as Json string ,using key 'cart'
-
   //implemented the below functions through useReducer
   // const addtocart = (id, sku, price) => {
   //   //in this method we are updating state using existing state so we are using function form of set state
@@ -73,29 +60,20 @@ export default function App() {
   // };
 
   return (
-    <>
+    <CartProvider>
       <div className="content">
         <Header />
         <main>
           <Routes>
             <Route path="/" element={<h1>Welcome to Carved Rock Fitness</h1>} />
             <Route path="/:category" element={<ProductsPage />} />
-            <Route
-              path="/:category/:id"
-              element={<Detail dispatch={dispatch} />}
-            />
-            <Route
-              path="/cart"
-              element={<Cart cart={cart} dispatch={dispatch} />}
-            />
-            <Route
-              path="/checkout"
-              element={<Checkout cart={cart} dispatch={dispatch} />}
-            />
+            <Route path="/:category/:id" element={<Detail />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
           </Routes>
         </main>
       </div>
       <Footer />
-    </>
+    </CartProvider>
   );
 }
