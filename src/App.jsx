@@ -5,13 +5,16 @@ import Header from "./Header";
 import ProductsPage from "./components/Productspage/ProductsPage";
 import Detail from "./components/P-Detail/Detail";
 import Cart from "./components/Cart/Cart";
-import Checkout from "./components/checkout/Checkout";
+import Checkout from "./components/checkout/Checkout.class";
 import { Routes, Route } from "react-router-dom";
-import { CartProvider } from "./cartContext";
+
+import { useCart } from "./cartContext";
 
 export default function App() {
+  const { dispatch } = useCart();
+
   return (
-    <CartProvider>
+    <>
       <div className="content">
         <Header />
         <main>
@@ -20,11 +23,15 @@ export default function App() {
             <Route path="/:category" element={<ProductsPage />} />
             <Route path="/:category/:id" element={<Detail />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
+            <Route
+              path="/checkout"
+              dispatch={dispatch}
+              element={<Checkout />}
+            />
           </Routes>
         </main>
       </div>
       <Footer />
-    </CartProvider>
+    </>
   );
 }
